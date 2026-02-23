@@ -1,7 +1,7 @@
 body {
     margin: 0;
-    background-color: #fffdfd;
-    color: white;
+    background-color: #f1ecec;
+    color: rgb(255, 250, 250);
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -10,31 +10,40 @@ body {
     display: grid;
     grid-template-columns: 250px 1fr 300px;
     min-height: 100vh;
+    align-items: start;
 }
 
 .logo {
     font-size: 24px;
-    font-weight: bold;
-    color: #ff0066;
-    gap: 10%;
+    gap: 10px;
 }
 
 /* SIDEBAR */
 .sidebar {
     display: grid;
     grid-template-rows: 80px repeat(4, 50px);
-    padding: 20%;
+    padding: 20px;
     border-right: 1px solid #140b0b;
-    gap: 2%;
+    gap: 20px;
+    position: sticky; /* se quede “pegado” arriba cuando haces scroll. */
+    top: 0;
+    height: 100vh;
 }
 
 .item {
     display: grid;
     grid-template-columns: 30px 1fr;
     align-items: center;
-    gap: 10%;
+    gap: 10px;
     cursor: pointer;
     color: black;
+    padding: 10px;
+    border-radius: 8px;
+    transition: 0.2s; 
+}
+.item:hover { 
+    background-color: #c03a3a;
+    transform: scale(1.03); /* cambia el fondo al pasar el mouse */
     
 }
 
@@ -48,6 +57,7 @@ body {
     justify-content: center;
     gap: 25px;
     padding: 30px 0;
+    
 }
 
 /* STORIES */
@@ -84,34 +94,43 @@ body {
     background-color: #fbfbfb;
     border: 1px solid #222;
     border-radius: 8px;
-    color: black;
+    color: black;;
 }
 
 .post-header {
     display: grid;
     grid-template-columns: 40px 1fr;
     align-items: center;
-    padding: 3%;
+    padding: 15px;
 }
 
 .avatar {
     width: 32px;
     height: 32px;
-    border-radius: 50%;
+    border-radius: 50px;
 }
 
 .post-image img {
-    width: 100%;
+    width: 470px;
 }
 
 .post-actions {
-    display: grid;
-    grid-auto-flow: column;
-    padding: 10px;
+    display: flex;
+    gap: 10px; /* menos espacio entre reacciones */
+    padding: 5px 15px; /* menos espacio interno */
+    
+}
+
+.action{
+    display: flex;
+    padding: 5px 10px;
+    gap: 4px;
+    cursor: pointer;
 }
 
 .post-actions img {
     width: 32px;
+    height: 32px;
 }
 
 /* RIGHTBAR */
@@ -121,6 +140,7 @@ body {
     gap: 20px;
     padding: 30px 20px;
     color: black;
+    grid-column: 3;
 }
 
 .suggestion {
@@ -136,10 +156,9 @@ body {
     height: 40px;
     border-radius: 50%;
 }
-
 button {
-    background: none;
-    border: none;
-    color: #0095f6;
-    cursor: pointer;
+    background: rgb(128, 156, 200);
+    border-radius: 40px;
+    cursor: pointer; 
 }
+
