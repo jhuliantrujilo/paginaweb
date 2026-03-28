@@ -41,7 +41,7 @@ body {
 .sidebar {
     width: 80px;
     /* Ancho fijo para la barra lateral */
-    padding: 24px 12px 10px; 
+    padding: 24px 12px 10px;
     border-right: 1px solid var(--border-color);
     position: fixed;
     /* Esto la pega al lado izquierdo de la pantalla siempre */
@@ -143,23 +143,29 @@ body {
     /* Ocupa el espacio restante */
 }
 
+/* Agrupa el nombre, el icono de verificado y el tiempo de cada post en línea recta */
 .post-user-info {
     display: flex;
     align-items: center;
     gap: 5px;
+    /* Espaciado sutil entre nombre, chulo y fecha */
 }
 
+/* Aplica negrita a todos los nombres de usuario de la página */
 .username {
     font-weight: 600;
     font-size: 14px;
 }
 
+/* Tamaño de la imagen del "chulo" azul de cuenta verificada */
 .verified-icon {
     width: 20px;
     height: 20px;
     object-fit: contain;
+    /* Para que la imagen no se recorte ni deforme */
 }
 
+/* El texto de tiempo gris claro (ej: "• hace 2 horas") */
 .post-time {
     font-size: 12px;
     color: var(--text-gray);
@@ -333,10 +339,56 @@ body {
     height: 34px;
 }
 
+/* --- ESTILOS DE LIKES, PIE DE FOTO Y COMENTARIOS --- */
+
+/* Texto de "X Me gusta" debajo de los botones */
 .likes {
     font-size: 14px;
     margin-bottom: 8px;
+    /* Deja un respiro antes de la descripción */
     color: var(--text-color);
+}
+
+/* El pie de foto o descripción que el usuario pone en su post */
+.post-caption {
+    font-size: 14px;
+    margin-bottom: 6px;
+    line-height: 1.4;
+    /* Aumenta el alto entre líneas para mejor lectura */
+}
+
+/* Pone en negrita (resalta) el nombre del usuario dentro de la descripción */
+.post-caption strong {
+    font-weight: 600;
+}
+
+/* El enlace que dice "Ver los X comentarios" */
+.view-comments {
+    font-size: 14px;
+    color: var(--text-gray);
+    /* Color gris típico de textos secundarios */
+    margin-bottom: 6px;
+    cursor: pointer;
+    /* Cambia el ratón a una manito para indicar que es clickeable */
+}
+
+/* Contenedor que agrupa la lista de comentarios de muestra */
+.post-comments {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    /* Separación vertical entre cada comentario */
+    margin-bottom: 12px;
+}
+
+/* Diseño del texto de cada comentario individual */
+.comment {
+    font-size: 14px;
+}
+
+/* El nombre del amigo que comenta va en negrita */
+.comment strong {
+    font-weight: 600;
 }
 
 .post-actions-right {
@@ -496,32 +548,17 @@ body {
 /* PANTALLAS PEQUEÑAS (Tablets pequeñas y laptops estrechas) */
 @media (max-width: 900px) {
     .sidebar {
-        width: 72px;
-        /* Reducimos el ancho de la barra lateral */
-        padding: 24px 12px;
-        align-items: center;
-        /* Centrar los iconos */
+        width: 80px;
+        padding: 24px 12px 10px;
     }
 
     .feed {
-        margin-left: 72px;
-        /* Ajustamos el margen del feed al nuevo tamaño del menú */
-    }
-
-    /* Ocultamos el logo de Instagram y mostramos solo el logo del pajarito/cámara (en este caso lo ocultamos completo para simplicidad) */
-    .logo {
-        display: none;
-    }
-
-    /* Ocultamos el texto de los botones del menú, dejando solo iconos */
-    .item span {
-        display: none;
+        margin-left: 80px;
+        /* Ajustamos el margen del feed para pantallas más pequeñas, pero manteniendo el comportamiento del menú */
     }
 
     .item {
         padding: 12px;
-        /* Reducir padding porque ya no hay texto */
-        justify-content: center;
     }
 }
 
