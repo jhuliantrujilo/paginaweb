@@ -1,164 +1,580 @@
-body {
+/* 1. RESETEO BÁSICO
+   Esto asegura que todos los navegadores partan de cero,
+   quitando márgenes por defecto y arreglando las cajas (box-sizing). */
+* {
     margin: 0;
-    background-color: #f1ecec;
-    color: rgb(255, 250, 250);
-    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* GRID PRINCIPAL */
-.container {
-    display: grid;
-    grid-template-columns: 250px 1fr 300px;
-    min-height: 100vh;
-    align-items: start;
+/* 2. VARIABLES GLOBALES
+   Usar variables es muy buena práctica para no repetir colores. */
+:root {
+    --bg-color: #fafafa;
+    --border-color: #dbdbdb;
+    --text-color: #262626;
+    --text-gray: #8e8e8e;
+    --link-blue: #0095f6;
+    --hover-gray: #f2f2f2;
 }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    /* Una tipografía más moderna (la que usa Instagram) */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Ocultar scrollbars horizontales en historias de forma estética */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* GRID PRINCIPAL: Dividimos la pantalla en columnas */
+.container {
+    display: flex;
+    /* Cambiamos a flex para manejar mejor la barra lateral fija */
+    min-height: 100vh;
+}
+
+/* BARRA LATERAL (Navegación) */
+.sidebar {
+    width: 80px;
+    /* Ancho fijo para la barra lateral */
+    padding: 24px 12px 10px; 
+    border-right: 1px solid var(--border-color);
+    position: fixed;
+    /* Esto la pega al lado izquierdo de la pantalla siempre */
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    transition: width 0.3s ease;
+    overflow: hidden;
+
+}
+
+.text {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.sidebar:hover {
+    width: 244px;
+}
+
+.sidebar:hover .text {
+    opacity: 1;
+}
+
 
 .logo {
-    font-size: 24px;
-    gap: 10px;
+    padding: 24px 12px;
+    margin-bottom: 24px;
 }
 
-/* SIDEBAR */
-.sidebar {
-    display: grid;
-    grid-template-rows: 80px repeat(4, 50px);
-    padding: 20px;
-    border-right: 1px solid #140b0b;
-    gap: 20px;
-    position: sticky; /* se quede “pegado” arriba cuando haces scroll. */
-    top: 0;
-    height: 100vh;
+.logo img {
+    height: 29px;
+    /* Tamaño más realista para el logo */
+    width: auto;
+    object-fit: contain;
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    /* Espaciado entre items */
 }
 
 .item {
-    display: grid;
-    grid-template-columns: 30px 1fr;
+    display: flex;
     align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    color: black;
-    padding: 10px;
+    gap: 16px;
+    padding: 12px;
     border-radius: 8px;
-    transition: 0.2s; 
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 16px;
+    transition: background 0.2s ease;
 }
-.item:hover { 
-    background-color: #c03a3a;
-    transform: scale(1.03); /* cambia el fondo al pasar el mouse */
-    
+
+.item:hover {
+    background-color: var(--hover-gray);
+    /* Ya no usamos scale, Instagram cambia solo el fondo sutilmente */
+}
+
+/* Poner negrita a las letras de navegación para darle peso */
+.item span {
+    font-weight: 400;
+}
+
+.item.active span {
+    font-weight: 700;
+    /* La pestaña actual en negrita */
 }
 
 .item img {
-    width: 32px;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 50%;
 }
 
-/* FEED */
+.nav-icon img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+/* ZONA CENTRAL (Feed) */
 .feed {
-    display: grid;
-    justify-content: center;
-    gap: 25px;
-    padding: 30px 0;
-    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 32px;
+    margin-left: 244px;
+    /* Movemos el feed a la derecha para que no quede detrás de la barra lateral (244px es el ancho del sidebar) */
+    flex: 1;
+    /* Ocupa el espacio restante */
 }
 
-/* STORIES */
+.post-user-info {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.username {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.verified-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.post-time {
+    font-size: 12px;
+    color: var(--text-gray);
+}
+
+/* Área interior del Feed para limitar el ancho y centrar el contenido */
+.feed-content {
+    display: flex;
+    width: 100%;
+    max-width: 820px;
+    /* Ancho del feed + Ancho de sugerencias */
+    justify-content: center;
+    gap: 32px;
+}
+
+/* Columna de posts e historias */
+.main-feed {
+    flex-grow: 1;
+    max-width: 470px;
+}
+
+/* HISTORIAS */
 .stories {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 80px;
-    gap: 15px;
-    padding: 15px;
-    border: 1px solid #222;
-    border-radius: 8px;
-    overflow-x: scroll; 
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    margin-bottom: 24px;
+    width: 100%;
+    max-width: 470px;
+    /* Ancho de un post normal */
+    overflow-x: auto;
+    background: #fff;
+    /* Instagram ya no le pone borde a la caja de historias, se ve más limpio sin él */
 }
 
 .story {
-    display: grid;
-    justify-items: center;
-    font-size: 12px;
-    color: black;
-    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+/* Efecto de borde de colores de las historias */
+.story-img-container {
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    /* Un gradiente para imitar el aro rojo/naranja de Instagram */
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .story img {
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    border: 3px solid #ff0066;
+    border: 3px solid #fff;
+    /* Borde blanco interno para separar del aro naranja */
+    object-fit: cover;
+    /* Evita que la imagen se deforme si no es cuadrada */
 }
 
-/* POST */
+.story p {
+    font-size: 12px;
+    color: var(--text-color);
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 74px;
+}
+
+/* LISTA DE POSTS */
+.posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    max-width: 470px;
+    padding-bottom: 40px;
+}
+
+/* POST INDIVIDUAL */
 .post {
-    display: grid;
-    width: 470px;
-    background-color: #fbfbfb;
-    border: 1px solid #222;
-    border-radius: 8px;
-    color: black;;
+    background-color: #fff;
+    border-bottom: 1px solid var(--border-color);
+    /* Instagram web actual a veces usa borde sutil abajo */
+    border-radius: 0;
 }
 
+/* header del post */
 .post-header {
-    display: grid;
-    grid-template-columns: 40px 1fr;
+    display: flex;
     align-items: center;
-    padding: 15px;
+    gap: 12px;
+    padding: 14px 0;
+    /* Menos padding en los bordes izquierdo/derecho */
 }
 
 .avatar {
     width: 32px;
     height: 32px;
-    border-radius: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.username {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Imagen del post */
+.post-image {
+    width: 100%;
+    border-radius: 4px;
+    /* Las imágenes en IG tienen bordes ligerísimamente redondeados */
+    border: 1px solid var(--border-color);
+    /* Un borde muy sutil a la imagen */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
 }
 
 .post-image img {
-    width: 470px;
+    width: 100%;
+    max-height: 585px;
+    /* Limite de altura típico en IG */
+    object-fit: cover;
+    /* Recortar en vez de encoger si la proporción falla */
+    display: block;
+}
+
+/* Botones y likes debajo del post */
+.post-footer {
+    padding: 8px 0;
+}
+
+.post-actions-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0 8px 0;
 }
 
 .post-actions {
     display: flex;
-    gap: 10px; /* menos espacio entre reacciones */
-    padding: 5px 15px; /* menos espacio interno */
-    
+    align-items: center;
+    gap: 16px;
 }
 
-.action{
-    display: flex;
-    padding: 5px 10px;
-    gap: 4px;
+.action-btn {
+    background: none;
+    border: none;
     cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn:hover {
+    opacity: 0.5;
+    /* Pequeño efecto al pasar el mouse */
 }
 
 .post-actions img {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
 }
 
-/* RIGHTBAR */
+.likes {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+.post-actions-right {
+    display: flex;
+    justify-content: flex-end;
+    /* Empuja el botón hacia la derecha */
+    flex: 1;
+    /* Ocupa el espacio disponible */
+}
+
+.post-actions-right .action-btn img {
+    width: 34px;
+    height: 34px;
+}
+
+/* BARRA DERECHA (Sugerencias) */
+.suggestions-container {
+    padding: 45px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    width: 319px;
+    /* Ancho fijo típico de IG */
+}
+
 .suggestions {
-    display: grid;
-    align-content: start;
-    gap: 20px;
-    padding: 30px 20px;
-    color: black;
-    grid-column: 3;
+    width: 100%;
+}
+
+.suggestions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.suggestions-header h3 {
+    font-size: 14px;
+    color: var(--text-gray);
+    font-weight: 600;
+}
+
+.suggestions-header a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.suggestions-header a:hover {
+    opacity: 0.5;
 }
 
 .suggestion {
-    display: grid;
-    grid-template-columns: 40px 1fr 70px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    color: black;
+    padding: 8px 0;
 }
 
-.suggestion img {
-    width: 40px;
-    height: 40px;
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-info img {
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-}
-button {
-    background: rgb(128, 156, 200);
-    border-radius: 40px;
-    cursor: pointer; 
+    object-fit: cover;
 }
 
+.text-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.text-info .username {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.text-info .subtitle {
+    font-size: 12px;
+    color: var(--text-gray);
+}
+
+/* Botón de seguir de Instagram */
+.follow-btn {
+    background: transparent;
+    border: none;
+    color: var(--link-blue);
+    /* Color azul eléctrico típico de enlaces/botones de IG */
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.follow-btn:hover {
+    color: #00376b;
+    /* Un azul más oscuro al pasar sobre él */
+}
+
+/* NAVEGACIÓN INFERIOR (Móviles) */
+.bottom-nav {
+    display: none;
+    /* Oculto por defecto en escritorio */
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    border-top: 1px solid var(--border-color);
+    padding: 12px 24px;
+    z-index: 1000;
+}
+
+.bottom-nav .nav-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bottom-nav .nav-icon img {
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+}
+
+/* 3. RESPONSIVE DESIGN (Pantallas medianas y móviles) */
+
+/* -------------------------------------------------------------------------
+   RESPONSIVE PARA DESKTOP (Pantallas ultra anchas o monitores grandes)
+   En tu código actual, todo lo que no está dentro de un @media 
+   ya cuenta como Desktop (estrategia Desktop-First).
+   Pero si quieres reglas específicas para pantallas MAYORES a cierto ancho:
+------------------------------------------------------------------------- */
+@media (min-width: 1440px) {
+
+    /* Aquí pones lo que cambia solo en pantallas gigantes */
+    .feed-content {
+        max-width: 950px;
+        /* Hacemos el contenedor principal más ancho */
+        gap: 64px;
+        /* Separamos más las sugerencias del muro */
+    }
+}
+
+/* TABLETS: Pantallas de tamaño medio (entre 769px y 1200px) */
+@media (max-width: 1200px) {
+    .suggestions-container {
+        display: none;
+        /* Ocultar la barra derecha completa */
+    }
+}
+
+/* PANTALLAS PEQUEÑAS (Tablets pequeñas y laptops estrechas) */
+@media (max-width: 900px) {
+    .sidebar {
+        width: 72px;
+        /* Reducimos el ancho de la barra lateral */
+        padding: 24px 12px;
+        align-items: center;
+        /* Centrar los iconos */
+    }
+
+    .feed {
+        margin-left: 72px;
+        /* Ajustamos el margen del feed al nuevo tamaño del menú */
+    }
+
+    /* Ocultamos el logo de Instagram y mostramos solo el logo del pajarito/cámara (en este caso lo ocultamos completo para simplicidad) */
+    .logo {
+        display: none;
+    }
+
+    /* Ocultamos el texto de los botones del menú, dejando solo iconos */
+    .item span {
+        display: none;
+    }
+
+    .item {
+        padding: 12px;
+        /* Reducir padding porque ya no hay texto */
+        justify-content: center;
+    }
+}
+
+/* MÓVILES: Pantallas pequeñas como celulares (menos de 768px) */
+@media (max-width: 400px) {
+    .container {
+        /* En móvil, el feed ocupa el 100% y quitamos la cuadrícula (grid) */
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 60px;
+        /* Espacio abajo para que no se oculte el post detrás del menú */
+    }
+
+    .sidebar {
+        /* Ocultar completamente la barra lateral izquierda en celulares */
+        display: none;
+    }
+
+    .feed {
+        padding-top: 10px;
+        max-width: 100%;
+        margin-left: 0;
+        /* MUY IMPORTANTE: Quitamos el margen izquierdo porque ya no hay sidebar */
+        /* El feed toma todo el ancho */
+    }
+
+    .posts-list {
+        max-width: 100%;
+        /* Los posts se estiran hasta los bordes en celular */
+        border: none;
+    }
+
+    .post {
+        border-right: none;
+        border-left: none;
+        /* Los posts en celular no tienen borde a los lados */
+    }
+
+    .post-image img {
+        border-radius: 0;
+        /* Las fotos en celular llegan de borde a borde */
+        border: none;
+    }
+
+    .stories {
+        max-width: 100%;
+        padding: 16px;
+        margin-bottom: 10px;
+    }
+
+    /* Mostrar la barra de navegación inferior solo en móviles */
+    .bottom-nav {
+        display: flex;
+        justify-content: space-between;
+    }
+}
